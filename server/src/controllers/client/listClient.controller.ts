@@ -4,7 +4,7 @@ import { AppError } from "../../errors/appError";
 import listClientService from "../../services/client/listClient.service";
 
 const listClient = async (req: Request, res: Response) => {
-  const clientId = req.params.id;
+  const clientId = req.params.clientId;
 
   try {
     const client = await listClientService(clientId);

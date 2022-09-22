@@ -5,10 +5,11 @@ import updateClientService from "../../services/client/updateClient.service";
 
 const updateClient = async (req: Request, res: Response) => {
   try {
-    const clientId = req.params.id;
+    const clientId = req.params.clientId;
+    const clientIdToken = req.client;
     const clientData = req.body;
 
-    await updateClientService(clientId, clientData);
+    await updateClientService(clientId, clientData, clientIdToken);
 
     return res.status(200).json({
       message: "Client updated with success",
