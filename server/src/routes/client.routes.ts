@@ -9,8 +9,8 @@ import verifyToken from "../middlewares/verifyToken.middleware";
 const clientRoutes = Router();
 
 clientRoutes.post("", createClient);
-clientRoutes.get("/:id", verifyToken, listClient);
-clientRoutes.patch("/:id", verifyToken, updateClient);
-clientRoutes.delete("/:id", verifyToken, deleteClient);
+clientRoutes.get("/:clientId", verifyToken, listClient);
+clientRoutes.patch("/:clientId", verifyToken, updateClient);
+clientRoutes.delete("/:clientId", verifyToken, deleteClient);
 
 export default clientRoutes;
