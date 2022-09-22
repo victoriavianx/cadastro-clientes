@@ -6,7 +6,11 @@ import bcrypt from "bcrypt";
 import { Client } from "../../entities/client.entity";
 import { IClientUpdate } from "../../interfaces/client.interface";
 
-const updateClientService = async (id: string, clientData: IClientUpdate) => {
+const updateClientService = async (
+  id: string,
+  clientData: IClientUpdate,
+  clientIdToken: string
+) => {
   const clientRepository = AppDataSource.getRepository(Client);
 
   const client = await clientRepository.findOneBy({
@@ -15,6 +19,10 @@ const updateClientService = async (id: string, clientData: IClientUpdate) => {
 
   if (!client) {
     throw new AppError("Client not found", 404);
+  }
+
+  if (clientIdToken !== client.id) {
+    throw new AppError("You don't have permission to do this action", 403);
   }
 
   if (clientData.password) {
