@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 
 import { Client } from "./client.entity";
 
@@ -14,10 +14,13 @@ export class Contact {
   lastname: string;
 
   @Column()
-  phone: number;
+  email: string;
 
   @Column()
-  cellphone: number;
+  phone: string;
+
+  @Column()
+  cellphone: string;
 
   @ManyToOne((type) => Client, (client) => client.contacts, { eager: true })
   client: Client[];
