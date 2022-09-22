@@ -1,11 +1,11 @@
 export interface IContactRequest {
   name: string;
   lastname: string;
-  phone: number;
-  cellphone: number;
+  email: string;
+  phone: string;
+  cellphone: string;
 }
 
 export interface IContact extends IContactRequest {
   id: string;
-  client: string;
 }
