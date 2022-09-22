@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc-node-dev src/server.ts",
-    "test": "jest",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "test": "NODE_ENV=test jest",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "dev": "ts-node-dev src/server.ts"
   },
   "license": "MIT",
   "devDependencies": {
