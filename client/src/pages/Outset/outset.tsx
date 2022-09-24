@@ -1,5 +1,7 @@
 import CustomButton from "../../components/Button/button";
 
+// import { Redirect } from "react-router-dom";
+
 import { Heading, Highlight } from "@chakra-ui/react";
 import { Box, Main } from "./styles";
 
