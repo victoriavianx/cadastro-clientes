@@ -13,25 +13,31 @@ import {
 } from "./styles";
 import { FiMail, FiPhone, FiSmartphone, FiKey, FiUser } from "react-icons/fi";
 
+import { Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../schema/schema";
 
 import { useRegisterClient } from "../../providers/client/registerProvider";
-// import { IClient } from "../../interfaces";
+import { useAuth } from "../../providers/client/authProvider";
 
 const SignUp = () => {
+  const { authenticated } = useAuth();
   const { setRegisterValues } = useRegisterClient();
 
   const {
     handleSubmit,
     register,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
   const submitData = (data: any) => {
     setRegisterValues(data);
   };
+
+  if (authenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <Container>
@@ -106,9 +112,9 @@ const SignUp = () => {
           <BoxButton>
             <Button
               width={"150px"}
-              isDisabled={!isValid}
               type="submit"
               bgColor={"black"}
+              color={"white"}
               fontWeight={"light"}
               fontFamily={"monospace"}
             >
