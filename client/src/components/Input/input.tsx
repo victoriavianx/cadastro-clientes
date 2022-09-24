@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { InputGroup, InputLeftElement } from "@chakra-ui/react";
 import {
   FieldErrorsImpl,
   FieldValues,
@@ -6,14 +6,16 @@ import {
   FieldError,
   Merge,
 } from "react-hook-form";
+import { InputCustom } from "./styles";
 
 interface IInput {
   icon: any;
-  placeholder: string;
+  placeholder: string | undefined;
   type: string;
   register: UseFormRegister<FieldValues>;
   name: string;
-  error:
+  defaultValue?: string;
+  error?:
     | string
     | FieldError
     | Merge<FieldError, FieldErrorsImpl<any>>
@@ -26,14 +28,16 @@ const CustomInput = ({
   type,
   register,
   name,
+  defaultValue,
   error,
 }: IInput) => {
   return (
     <InputGroup style={{ marginBottom: "1rem" }}>
       <InputLeftElement pointerEvents="none" children={icon} />
-      <Input
+      <InputCustom
         variant={"flushed"}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         type={type}
         {...register(name)}
         borderColor={"black"}
