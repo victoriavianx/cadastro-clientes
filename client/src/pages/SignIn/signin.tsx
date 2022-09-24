@@ -1,10 +1,15 @@
 import Draw from "../../assets/images/undraw_people_search_re_5rre.svg";
 import CustomInput from "../../components/Input/input";
 
+import { api } from "../../services/data-source";
+import jwt from "jwt-decode";
+
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "../../schema/schema";
+import { loginSchema } from "../../schema/schema";
 
+import { toast } from "react-toastify";
 import { Text, Button } from "@chakra-ui/react";
 import {
   Box,
@@ -15,13 +20,38 @@ import {
   Link,
 } from "../SignUp/styles";
 import { FiMail, FiKey } from "react-icons/fi";
+import { useAuth } from "../../providers/client/authProvider";
 
 const SignIn = () => {
+  const { setAuthenticated } = useAuth();
+  const history = useHistory();
+
   const {
     handleSubmit,
     register,
-    formState: { errors, isValid },
-  } = useForm({ resolver: yupResolver(schema) });
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(loginSchema) });
+
+  const submitData = (data: any) => {
+    api
+      .post("/login", data)
+      .then((response) => {
+        const token = response.data.accessToken;
+
+        const client = jwt(token);
+
+        localStorage.setItem("@Contacte:token", JSON.stringify(token));
+
+        localStorage.setItem("@Contacte:client", JSON.stringify(client));
+
+        setAuthenticated(true);
+
+        history.push("/dashboard");
+      })
+      .catch((err) => {
+        toast.error("Email ou senha inválidos");
+      });
+  };
 
   return (
     <Container>
@@ -38,7 +68,7 @@ const SignIn = () => {
         >
           login
         </Text>
-        <Form>
+        <Form onSubmit={handleSubmit(submitData)}>
           <CustomInput
             name="email"
             register={register}
@@ -58,10 +88,10 @@ const SignIn = () => {
 
           <BoxButton>
             <Button
-              width={"150px"}
-              isDisabled={!isValid}
               type="submit"
+              width={"150px"}
               bgColor={"black"}
+              color={"white"}
               fontWeight={"light"}
               fontFamily={"monospace"}
             >
