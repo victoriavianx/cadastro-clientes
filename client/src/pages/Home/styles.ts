@@ -10,3 +10,17 @@ export const Container = styled.main`
   max-width: 1024px;
   background-color: #c4f56c;
 `;
+
+export const Box = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  button {
+    height: 35px;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
