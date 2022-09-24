@@ -1,10 +1,23 @@
-import { Container } from "./styles";
+import { useAuth } from "../../providers/client/authProvider";
+import { useHistory } from "react-router-dom";
+
 import { Heading, Button } from "@chakra-ui/react";
+import { FiArrowRightCircle } from "react-icons/fi";
+import { Container } from "./styles";
 import MenuProfile from "../Menu/menu";
 
-import { FiArrowRightCircle } from "react-icons/fi";
-
 const Header = () => {
+  const { setAuthenticated } = useAuth();
+  const history = useHistory();
+
+  const handleClick = () => {
+    localStorage.clear();
+
+    setAuthenticated(false);
+
+    return history.push("/signin");
+  };
+
   return (
     <Container>
       <Heading fontSize={"28px"} marginRight={"2rem"}>
@@ -19,6 +32,7 @@ const Header = () => {
           fontWeight={"thin"}
           fontStyle={"italic"}
           marginLeft={"1rem"}
+          onClick={handleClick}
         >
           Sair
         </Button>
