@@ -1,21 +1,50 @@
 import Draw from "../../assets/images/undraw_people_search_re_5rre.svg";
-
 import CustomInput from "../../components/Input/input";
 
+import { useAuth } from "../../providers/client/authProvider";
+import { getClient, getToken } from "../../utils";
+import { api } from "../../services/data-source";
+import { toast } from "react-toastify";
+
+import { Redirect, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../../schema/schema";
 
-import { Text } from "@chakra-ui/react";
+import { Text, Button } from "@chakra-ui/react";
 import { Box, Container, Content, Form, FullName } from "../SignUp/styles";
 import { FiMail, FiPhone, FiSmartphone, FiKey, FiUser } from "react-icons/fi";
 
+const clientId = JSON.parse(getClient);
+
+const token = JSON.parse(getToken);
+
 const Update = () => {
+  const { authenticated } = useAuth();
+  const history = useHistory();
+
   const {
     handleSubmit,
     register,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+
+  if (!authenticated) {
+    return <Redirect to="/" />;
+  }
+
+  const submitData = (data: any) => {
+    api
+      .patch(`/clients/${clientId}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        toast.success("Contato atualizado");
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Container>
@@ -34,7 +63,7 @@ const Update = () => {
         >
           Atualize sua conta
         </Text>
-        <Form>
+        <Form onSubmit={handleSubmit(submitData)}>
           <FullName>
             <CustomInput
               name="name"
@@ -85,6 +114,13 @@ const Update = () => {
             type={"tel"}
             error={errors.cellphone?.message}
           />
+
+          <Button type="submit" bgColor={"green.500"} color={"white"} mr={3}>
+            Adicionar
+          </Button>
+          <Button variant="ghost" onClick={() => history.push("/dashboard")}>
+            Cancelar
+          </Button>
         </Form>
       </Content>
     </Container>
